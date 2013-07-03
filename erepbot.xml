@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="erepbot" default="all">
+  
+  
+  <property file="erepbot.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.pircbot.classpath">
+    <pathelement location="/libs/pircbot.jar"/>
+  </path>
+  
+  <path id="library.quick-json-1.0.2.3.classpath">
+    <pathelement location="/libs/quick-json-1.0.2.3.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module erepBot -->
+  
+  <dirname property="module.erepbot.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.erepbot" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.erepbot" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.erepbot" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.erepbot" value="${compiler.args}"/>
+  
+  <property name="erepbot.output.dir" value="${module.erepbot.basedir}/out/production/erepBot"/>
+  <property name="erepbot.testoutput.dir" value="${module.erepbot.basedir}/out/test/erepBot"/>
+  
+  <path id="erepbot.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="erepbot.module.production.classpath">
+    <path refid="${module.jdk.classpath.erepbot}"/>
+    <path refid="library.pircbot.classpath"/>
+    <path refid="library.quick-json-1.0.2.3.classpath"/>
+  </path>
+  
+  <path id="erepbot.runtime.production.module.classpath">
+    <pathelement location="${erepbot.output.dir}"/>
+    <path refid="library.pircbot.classpath"/>
+    <path refid="library.quick-json-1.0.2.3.classpath"/>
+  </path>
+  
+  <path id="erepbot.module.classpath">
+    <path refid="${module.jdk.classpath.erepbot}"/>
+    <pathelement location="${erepbot.output.dir}"/>
+    <path refid="library.pircbot.classpath"/>
+    <path refid="library.quick-json-1.0.2.3.classpath"/>
+  </path>
+  
+  <path id="erepbot.runtime.module.classpath">
+    <pathelement location="${erepbot.testoutput.dir}"/>
+    <pathelement location="${erepbot.output.dir}"/>
+    <path refid="library.pircbot.classpath"/>
+    <path refid="library.quick-json-1.0.2.3.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.erepbot">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.erepbot">
+    <patternset refid="excluded.from.module.erepbot"/>
+  </patternset>
+  
+  <path id="erepbot.module.sourcepath">
+    <dirset dir="${module.erepbot.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.erepbot" depends="compile.module.erepbot.production,compile.module.erepbot.tests" description="Compile module erepBot"/>
+  
+  <target name="compile.module.erepbot.production" depends="register.custom.compilers" description="Compile module erepBot; production classes">
+    <mkdir dir="${erepbot.output.dir}"/>
+    <javac2 destdir="${erepbot.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.erepbot}/javac">
+      <compilerarg line="${compiler.args.erepbot}"/>
+      <bootclasspath refid="erepbot.module.bootclasspath"/>
+      <classpath refid="erepbot.module.production.classpath"/>
+      <src refid="erepbot.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.erepbot"/>
+    </javac2>
+    
+    <copy todir="${erepbot.output.dir}">
+      <fileset dir="${module.erepbot.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.erepbot.tests" depends="register.custom.compilers,compile.module.erepbot.production" description="compile module erepBot; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.erepbot" description="cleanup module">
+    <delete dir="${erepbot.output.dir}"/>
+    <delete dir="${erepbot.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.erepbot" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.erepbot" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
